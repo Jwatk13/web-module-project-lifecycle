@@ -8,8 +8,35 @@ const URL = 'http://localhost:9000/api/todos'
 export default class App extends React.Component {
 
   state = {
-    todos: []
+    todos: [],
+    todoInput: ''
   };
+
+  handleChange = (evt) => {
+    const { value } = evt.target
+    this.setState({
+     ...this.state, todoInput: value
+    })
+  };
+
+  postTodos = () => {
+    axios.post(URL, { name: this.state.todoInput })
+      .then(res => {
+        console.log(res.data.message)
+        this.fetchTodos
+      })
+      .catch(err => {
+        console.error(err)
+      })
+  };
+
+   handleSubmit = () => {
+    // evt.preventDefault()
+    this.postTodos()
+    this.setState({
+      todoInput: ""
+    })
+  }
 
   fetchTodos = () => {
     axios.get(URL)
@@ -39,7 +66,16 @@ export default class App extends React.Component {
             })
           }
         </div>
-        <Form />
+        <form onSubmit={this.handleSubmit} id="todoForm">
+          <input
+            onChange={this.handleChange} 
+            value={this.state.todoInput}   
+            type="text" 
+            placeholder='Type Todo...'>
+          </input>
+          <input type="submit"></input>
+          <button>Clear Completed!</button>
+        </form>
       </div>
     )
   }
