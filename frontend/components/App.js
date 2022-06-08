@@ -21,28 +21,17 @@ export default class App extends React.Component {
     })
   };
 
-  resetForm = () => {
-    this.setState({ ...this.state, todoInput: "" })
-  };
-
-  postTodos = () => {
-    axios.post(URL, { name: this.state.todoInput })
-      .then(res => {
-        this.fetchTodos
-        this.resetForm
-      })
-      .catch(err => {
-        console.error(err)
-      })
-  };
-
-   handleSubmit = () => {
+  handleSubmit = () => {
     // evt.preventDefault()
     this.postTodos()
     this.setState({
       todoInput: ""
     })
-  }
+  };
+
+  resetForm = () => {
+    this.setState({ ...this.state, todoInput: "" })
+  };
 
   fetchTodos = () => {
     axios.get(URL)
@@ -55,6 +44,17 @@ export default class App extends React.Component {
     .catch(err => {
       console.error(err)
     })
+  };
+
+  postTodos = () => {
+    axios.post(URL, { name: this.state.todoInput })
+      .then(res => {
+        this.fetchTodos
+        this.resetForm
+      })
+      .catch(err => {
+        console.error(err)
+      })
   };
 
   toggler = id => () => {
@@ -74,7 +74,7 @@ export default class App extends React.Component {
 
   toggleComplete = () => {
     this.setState({ ...this.state, displayComplete: !this.state.displayComplete })
-  }
+  };
 
   componentDidMount() {
     this.fetchTodos()
